@@ -1,31 +1,71 @@
 package org.example;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
 public class User {
-    private String userName;
-    private String password;
-    private String userType;
+    RoleTemplate roleTemplate;
 
-    public String getUserName() {
-        return userName;
+    User(RoleTemplate roleTemplate){
+        this.roleTemplate=roleTemplate;
+    }
+    public void userFeature(){
+        System.out.println("Please Select Number");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("1) Withdraw");
+        System.out.println("2) Deposit");
+        System.out.println("3) Transfer");
+        System.out.println("4) Check Balance");
+
+        int selectNumber = scanner.nextInt();
+
+        switch (selectNumber){
+            case 1:
+                withdraw();
+                break;
+            case 2:
+                deposit();
+                break;
+            case 3:
+                transfer();
+                break;
+            case 4:
+                accountBalance();
+                break;
+            default:
+                System.out.println("Invalid Number!! please Select Valid Number");
+        }
+    }
+    public void withdraw(){
+
+        System.out.print("Please Enter Withdraw Amount Rs: ");
+        Scanner scanner = new Scanner(System.in);
+        int amount = scanner.nextInt();
+
+        try (Statement stmt = new DatabaseCon().createConnection() ) {
+
+            String query=  "UPDATE account SET balance = balance -"+String.valueOf(amount) +
+                    " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
+
+            int rs = stmt.executeUpdate(query);
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void deposit(){
+
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void transfer(){
+
     }
 
-    public String getPassword() {
-        return password;
-    }
+    public void accountBalance(){
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
     }
 }
