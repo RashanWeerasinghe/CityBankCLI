@@ -11,6 +11,7 @@ public class User {
     User(RoleTemplate roleTemplate){
         this.roleTemplate=roleTemplate;
     }
+    Scanner scanner = new Scanner(System.in);
     public void userFeature(){
         System.out.println("Please Select Number");
 
@@ -42,7 +43,7 @@ public class User {
     public void withdraw(){
 
         System.out.print("Please Enter Withdraw Amount Rs: ");
-        Scanner scanner = new Scanner(System.in);
+
         int amount = scanner.nextInt();
 
         try (Statement stmt = new DatabaseCon().createConnection() ) {
@@ -58,7 +59,19 @@ public class User {
 
     }
     public void deposit(){
+        System.out.print("Please Enter Deposit Amount Rs: ");
+        int depositAmount = scanner.nextInt();
 
+        try (Statement stmt = new DatabaseCon().createConnection() ) {
+
+            String query=  "UPDATE account SET balance = balance +"+String.valueOf(depositAmount) +
+                    " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
+
+            int rs = stmt.executeUpdate(query);
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void transfer(){
