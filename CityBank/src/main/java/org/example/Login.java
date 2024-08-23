@@ -18,7 +18,7 @@ public class Login {
 
         RoleTemplate roleTemplate = new RoleTemplate();
 
-        try (Statement stmt = new DatabaseCon().createConnection() ) {
+        try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
             String query = "SELECT * FROM user";
             ResultSet rs = stmt.executeQuery(query);
             String usernameDB = "";

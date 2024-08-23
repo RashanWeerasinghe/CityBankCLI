@@ -1,5 +1,6 @@
 package org.example;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -46,7 +47,7 @@ public class User {
 
         int amount = scanner.nextInt();
 
-        try (Statement stmt = new DatabaseCon().createConnection() ) {
+        try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
 
             String query=  "UPDATE account SET balance = balance -"+String.valueOf(amount) +
                     " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
@@ -62,7 +63,7 @@ public class User {
         System.out.print("Please Enter Deposit Amount Rs: ");
         int depositAmount = scanner.nextInt();
 
-        try (Statement stmt = new DatabaseCon().createConnection() ) {
+        try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
 
             String query=  "UPDATE account SET balance = balance +"+String.valueOf(depositAmount) +
                     " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
@@ -75,7 +76,30 @@ public class User {
     }
 
     public void transfer(){
+        System.out.print("Please Enter Transfer Account Number: ");
+        int accountNumber = scanner.nextInt();
+        System.out.print("Please Enter Transfer Amount RS: ");
+        int transferamount = scanner.nextInt();
 
+        try (Connection connection = new DatabaseCon().createConnection();
+             Statement stmt = connection.createStatement() ) {
+
+
+            String query1=  "UPDATE account SET balance = balance -"+String.valueOf(transferamount) +
+                    " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
+            String query2=  "UPDATE account SET balance = balance +"+String.valueOf(transferamount) +
+                    " WHERE AccountNumber ="+String.valueOf( accountNumber);
+
+
+            int rs1 = stmt.executeUpdate(query1);
+            int rs2 = stmt.executeUpdate(query2);
+
+            System.out.println("Transaction committed successfully.");
+
+        }catch (SQLException e) {
+
+            throw new RuntimeException(e);
+        }
     }
 
     public void accountBalance(){

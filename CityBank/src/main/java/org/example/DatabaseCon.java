@@ -10,9 +10,9 @@ public class DatabaseCon {
     String DB_USERNAME = "root";
     String DB_PASSWORD = "1234";
 
-    public Statement createConnection() throws SQLException {
+    public Connection createConnection() throws SQLException {
         Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-        Statement stmt = conn.createStatement();
-        return stmt;
+        return conn;
     }
+
 }
