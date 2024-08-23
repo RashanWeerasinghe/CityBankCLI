@@ -65,7 +65,7 @@ public class User {
 
         try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
 
-            String query=  "UPDATE account SET balance = balance +"+String.valueOf(depositAmount) +
+            String query =  "UPDATE account SET balance = balance +"+String.valueOf(depositAmount) +
                     " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
 
             int rs = stmt.executeUpdate(query);
@@ -104,5 +104,22 @@ public class User {
 
     public void accountBalance(){
 
+        System.out.println("Your Bank Account details: ");
+
+        try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
+
+            String query = "SELECT *FROM ACCOUNT WHERE USER_ID="+String.valueOf(roleTemplate.getUserId());
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            if (rs.next()) {
+                System.out.println("Your Bank Account Balance is: " + rs.getString("balance"));
+            } else {
+                System.out.println("No account found for the given User ID.");
+            }
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
