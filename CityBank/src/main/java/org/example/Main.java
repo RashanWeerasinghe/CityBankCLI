@@ -20,15 +20,16 @@ public class Main {
 
         switch (roleTemplate.getUserType()){
             case "USER":
-                System.out.println("Welcome to User DashBoard");
                 User user = new User(roleTemplate);
                 user.userFeature();
                 break;
             case "MANAGER":
-                System.out.println("Welcome to Manager Dashboard");
+                Manager manager=new Manager(roleTemplate);
+                manager.managerFeature();
                 break;
             case "ADMIN":
-                System.out.println("Welcome to Admin Dashboard");
+                Admin admin=new Admin();
+                admin.adminFeature();
                 break;
             default:
                 break;
