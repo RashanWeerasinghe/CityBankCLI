@@ -1,5 +1,6 @@
 package org.example;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -49,15 +50,40 @@ public class User {
 
         try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
 
+
             String query=  "UPDATE account SET balance = balance -"+String.valueOf(amount) +
                     " WHERE user_id ="+String.valueOf( roleTemplate.getUserId());
 
             int rs = stmt.executeUpdate(query);
 
+
+
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Current Balance is: "+getBalance());
+        userFeature();
+    }
+    private BigDecimal getBalance(){
 
+        BigDecimal balance;
+
+        try (Statement stmt = new DatabaseCon().createConnection().createStatement() ) {
+
+
+            String query=  "select balance from account WHERE user_id="+String.valueOf(roleTemplate.getUserId());
+
+
+
+            ResultSet rs = stmt.executeQuery(query);
+            rs.next();
+            balance=rs.getBigDecimal("balance");
+
+
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return balance;
     }
     public void deposit(){
         System.out.print("Please Enter Deposit Amount Rs: ");
@@ -73,6 +99,8 @@ public class User {
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("Current Balance is: "+getBalance());
+        userFeature();
     }
 
     public void transfer(){
@@ -100,6 +128,8 @@ public class User {
 
             throw new RuntimeException(e);
         }
+        System.out.println("Current Balance is: "+getBalance());
+        userFeature();
     }
 
     public void accountBalance(){
@@ -121,5 +151,6 @@ public class User {
         }catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        userFeature();
     }
 }
